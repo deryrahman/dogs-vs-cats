@@ -94,10 +94,10 @@ def train(num_iteration, x, y_true):
             epoch = int(i / int(data.train.num_examples / batch_size))
 
             show_progress(epoch, feed_dict_tr, feed_dict_val, val_loss)
-            directory = "./dogs-cats-model/"
+            directory = "./dogs-cats-model"
             if not os.path.exists(directory):
                 os.makedirs(directory)
-            saver.save(session, directory)
+            saver.save(session, directory + "/dogs-cats-model")
 
     total_iterations += num_iteration
 
