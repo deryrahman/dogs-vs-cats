@@ -6,7 +6,7 @@ from config import app
 from exception import GenericException
 import json
 from functools import wraps
-from image_classifier.predict import predict
+from image_classifier import ImageClassifierCNN
 
 
 def allowed_file(filename):
@@ -59,7 +59,8 @@ def upload_file():
             if not os.path.exists(app.config['UPLOAD_FOLDER']):
                 os.makedirs(app.config['UPLOAD_FOLDER'])
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            result = predict(os.path.join(app.config['UPLOAD_FOLDER'] + "/" + str(filename)))
+            image_classifier = ImageClassifierCNN(classes=['dogs', 'cats'])
+            result = image_classifier.predict(os.path.join(app.config['UPLOAD_FOLDER'] + "/" + str(filename)))
             response = {
                 "status": 200,
                 "payload": {
