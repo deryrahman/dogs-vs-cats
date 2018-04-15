@@ -37,10 +37,6 @@ def exception_helper(f):
             return error_handler(error)
     return decorated_function
 
-# @app.route('/')
-# def index():
-#     return 'OK'
-
 
 @app.route('/', methods=['GET', 'POST'])
 @exception_helper
