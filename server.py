@@ -1,5 +1,5 @@
 import os
-from flask import jsonify, request, redirect, url_for, Response
+from flask import jsonify, request, redirect, url_for, Response, render_template
 from werkzeug.utils import secure_filename
 import traceback
 from config import app
@@ -7,6 +7,21 @@ from exception import GenericException
 import json
 from functools import wraps
 from image_classifier import ImageClassifierCNN
+
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                     endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
 
 
 def allowed_file(filename):
@@ -38,9 +53,14 @@ def exception_helper(f):
     return decorated_function
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'], strict_slashes=False)
+def home():
+    return render_template('index.html')
+
+
+@app.route('/predict', methods=['POST'], strict_slashes=False)
 @exception_helper
-def upload_file():
+def predict():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -60,10 +80,16 @@ def upload_file():
             response = {
                 "status": 200,
                 "payload": {
-                    "predicted": result
+                    "predicted": result,
+                    "path": app.config['UPLOAD_FOLDER'] + "/" + str(filename)
                 }
             }
             return Response(json.dumps(response), status=200, mimetype='application/json')
+
+
+@app.route('/predict', methods=['GET'], strict_slashes=False)
+@exception_helper
+def predict_():
     response = {
         "status": 200,
         "payload": {

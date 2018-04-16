@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dogs Cats Image Classifier</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  {% block javascript %}
+  <script type="text/javascript">
+    {% include "script.js" %}
+  </script>
+  {% endblock %}
+  <style type="text/css">
+  hr{
+  	border-top: 1px dashed #8c8b8b;
+  	border-bottom: 1px dashed #fff;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="container wrapper">
+    <div class="container">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-6">
+              <h1>Dogs vs Cats</h1>
+              <p>Upload dogs/cats image, let me predict..</p>
+              <form enctype="multipart/form-data" id="uploader" method="post">
+                <label class="btn btn-default">
+                  <input type="file" name="file">
+                </label>
+                <button class="btn btn-sm btn-primary" type="submit">Upload</button>
+              </form>
+              <hr />
+              <h2 id="predicted"></h2>
+              <p id="predicted-rival"></p>
+          </div>
+          <div class="col-md-6">
+            <img src="" width="100%" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
