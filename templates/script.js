@@ -26,6 +26,7 @@ $(document).ready(function(){
           predictedRival = 'Dog'
         }
         $('img').attr('src', result['payload']['path'])
+        $('img').addClass('img-thumbnail')
         $('#predicted').append(predicted + " : " + percentage + "%")
         $('#predicted-rival').append(predictedRival + " : " + percentageRival + "%")
       },
